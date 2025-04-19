@@ -1,0 +1,27 @@
+.env
+
+.gitattributes
+
+node_modules/
+
+.next/
+
+
+# Ignorar arquivos de logs
+*.log
+
+# Ignorar os arquivos do sistema operacional (ex: MacOS)
+.DS_Store
+
+# Ignorar arquivos do editor (ex: VSCode)
+.vscode/
+
+# Ignorar dependências do yarn
+.yarn/
+
+# Ignorar arquivos de teste
+*.test.js
+
+node_modules/@next/swc-linux-x64-gnu/next-swc.linux-x64-gnu.node filter=lfs diff=lfs merge=lfs -text
+
+node_modules/@next/swc-linux-x64-musl/next-swc.linux-x64-musl.node filter=lfs diff=lfs merge=lfs -text
