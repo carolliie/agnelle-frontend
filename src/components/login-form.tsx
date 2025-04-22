@@ -22,10 +22,33 @@ export function LoginForm({
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+<<<<<<< HEAD
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    
+    try {
+      await login(email, password);
+    } catch (error: any) {
+      if (error.response) {
+        setError(error.response.data.message || "Email ou senha incorretos");
+      } else if (error.request) {
+        setError("Não foi possível conectar ao servidor.");
+      } else {
+        setError("Ocorreu um erro durante o login.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+=======
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     await login(email, password);
+>>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
   };
 
   return (
@@ -68,8 +91,21 @@ export function LoginForm({
                     value={password}
                     onChange={(e) => setPassword(e.target.value)} required />
                 </div>
+<<<<<<< HEAD
+                {error && (
+                  <div className="text-sm font-medium text-destructive text-center">
+                    {error}
+                  </div>
+                )}
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isLoading}>
+                  {isLoading ? "Carregando..." : "Login"}
+=======
                 <Button type="submit" className="w-full">
                   Login
+>>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
                 </Button>
               </div>
             </div>
@@ -82,4 +118,8 @@ export function LoginForm({
       </div>
     </div>
   )
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a

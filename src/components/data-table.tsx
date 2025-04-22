@@ -69,7 +69,11 @@ export const columns: ColumnDef<Products>[] = [
     header: "Categorias",
     cell: ({ row }) => {
       const categories = row.getValue("categories") as string[];
+<<<<<<< HEAD
+      return <div>{Array.isArray(categories.length > 0) ? categories.join(", ") : "Sem categorias"}</div>
+=======
       return <div>{Array.isArray(categories) ? categories.join(", ") : "Sem categorias"}</div>
+>>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
     },
   },
   {

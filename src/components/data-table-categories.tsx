@@ -116,7 +116,11 @@ export const columns: ColumnDef<Category>[] = [
         } catch {
           toast({
             title: "❌ Erro ao deletar categoria.",
+<<<<<<< HEAD
+            description: "Esta categoria está associada a um produto. Tente novamente mais tarde.",
+=======
             description: "Tente novamente mais tarde.",
+>>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
           })
         }
       }

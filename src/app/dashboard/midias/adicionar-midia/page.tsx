@@ -53,10 +53,17 @@ export default function AdicionarMidia() {
                 });
             }
         } catch (err) {
+<<<<<<< HEAD
+            console.error("Erro ao enviar imagem:", err);
+            toast({
+                title: "❌ Erro ao enviar imagem",
+                description: "Esta imagem já existe. Tente novamente.",
+=======
             console.error("Erro ao carregar imagem:", err);
             toast({
                 title: "❌ Erro ao carregar imagem",
                 description: "Ocorreu um erro ao enviar a imagem. Tente novamente.",
+>>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
             });
             setError(true);
         }

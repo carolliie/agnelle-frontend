@@ -73,7 +73,11 @@ export default function AdicionarCategoria() {
       console.error("Erro ao adicionar categoria:", err)
       toast({
         title: "❌ Erro ao adicionar categoria.",
+<<<<<<< HEAD
+        description: "Esta categoria já existe. Tente novamente.",
+=======
         description: "Ocorreu um erro ao adicionar categoria. Tente novamente.",
+>>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
       })
     } finally {
       setIsSubmitting(false)
