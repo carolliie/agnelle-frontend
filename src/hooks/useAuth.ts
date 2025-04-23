@@ -58,10 +58,7 @@ export function useAuth() {
             router.push("/dashboard");
         } catch (error) {
             console.error("Erro ao fazer login", error);
-<<<<<<< HEAD
             throw error;
-=======
->>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
         }
     };
 

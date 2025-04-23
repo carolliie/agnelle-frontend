@@ -97,11 +97,7 @@ export function ProductForm() {
       console.error("Erro ao enviar produto:", error);
       toast({
         title: "❌ Erro ao publicar produto.",
-<<<<<<< HEAD
         description: "Este produto já existe ou não pode ser adicionado. Tente novamente mais tarde.",
-=======
-        description: "Tente novamente mais tarde.",
->>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
       });
     }
   };
@@ -114,7 +110,7 @@ export function ProductForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-fit space-y-8">
         <FormField
           control={form.control}
           name="name"

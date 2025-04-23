@@ -73,11 +73,7 @@ export default function AdicionarCategoria() {
       console.error("Erro ao adicionar categoria:", err)
       toast({
         title: "❌ Erro ao adicionar categoria.",
-<<<<<<< HEAD
         description: "Esta categoria já existe. Tente novamente.",
-=======
-        description: "Ocorreu um erro ao adicionar categoria. Tente novamente.",
->>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
       })
     } finally {
       setIsSubmitting(false)
@@ -85,7 +81,7 @@ export default function AdicionarCategoria() {
   }
 
   return (
-    <div className="max-w-sm mx-auto">
+    <div className="w-fit mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

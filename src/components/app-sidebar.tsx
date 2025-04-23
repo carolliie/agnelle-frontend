@@ -2,14 +2,12 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
   BookOpen,
-  Bot,
+  ShoppingBag,
   Command,
-  GalleryVerticalEnd,
-  Settings2,
+  PlusIcon,
   SquareTerminal,
-  ComputerIcon
+  Tags
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -28,19 +26,9 @@ import { NavCategories } from "./nav-categories"
 const data = {
   teams: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
       name: "Evil Corp.",
       logo: Command,
-      plan: "Free",
+      plan: "Admin Panel",
     },
   ],
   navMain: [
@@ -63,15 +51,16 @@ const data = {
     {
       title: "Produtos",
       url: "/dashboard/produtos",
-      icon: Bot,
+      icon: ShoppingBag,
       items: [
+        {
+          title: "Novo produto",
+          icon: PlusIcon,
+          url: "/dashboard/produtos/novo-produto",
+        },
         {
           title: "Todos os produtos",
           url: "/dashboard/produtos",
-        },
-        {
-          title: "Novo produto",
-          url: "/dashboard/produtos/novo-produto",
         },
         {
           title: "Categorias",
@@ -84,15 +73,16 @@ const data = {
     {
       title: "Categorias",
       url: "/dashboard/categorias",
-      icon: BookOpen,
+      icon: Tags,
       items: [
+        {
+          title: "Nova categoria",
+          icon: PlusIcon,
+          url: "/dashboard/categorias/adicionar-categoria",
+        },
         {
           title: "Todas as categorias",
           url: "/dashboard/categorias",
-        },
-        {
-          title: "Adicionar categoria",
-          url: "/dashboard/categorias/adicionar-categoria",
         },
       ],
     },
@@ -105,6 +95,7 @@ const data = {
       items: [
         {
           title: "Adicionar mídia",
+          icon: PlusIcon,
           url: "/dashboard/midias/adicionar-midia",
         },
         {
@@ -124,8 +115,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavMidias midias={data.midias}/>
         <NavCategories categories={data.categorias}/>
+        <NavMidias midias={data.midias}/>
       </SidebarContent>
       <SidebarFooter>
         <NavUser/>

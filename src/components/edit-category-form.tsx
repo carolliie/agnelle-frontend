@@ -117,7 +117,7 @@ export default function EditCategoryForm({ categorySlug }: { categorySlug: strin
 
   if (isLoading) {
     return (
-      <div className="max-w-sm mx-auto space-y-4">
+      <div className="w-fit mx-auto space-y-4">
         <div className="space-y-2">
           <Skeleton className="h-4 w-24" />
           <Skeleton className="h-10 w-full" />
@@ -132,7 +132,7 @@ export default function EditCategoryForm({ categorySlug }: { categorySlug: strin
   }
 
   return (
-    <div className="max-w-sm mx-auto">
+    <div className="w-fit mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

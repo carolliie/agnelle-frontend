@@ -22,15 +22,15 @@ export function LoginForm({
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-<<<<<<< HEAD
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    
+
     try {
+      setIsLoading(true); 
       await login(email, password);
     } catch (error: any) {
       if (error.response) {
@@ -43,12 +43,6 @@ export function LoginForm({
     } finally {
       setIsLoading(false);
     }
-=======
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await login(email, password);
->>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
   };
 
   return (
@@ -79,7 +73,7 @@ export function LoginForm({
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     <a
-                      href="#"
+                      href="/login/senha"
                       className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
@@ -89,9 +83,10 @@ export function LoginForm({
                     id="password"
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)} required />
+                    onChange={(e) => setPassword(e.target.value)} 
+                    required 
+                  />
                 </div>
-<<<<<<< HEAD
                 {error && (
                   <div className="text-sm font-medium text-destructive text-center">
                     {error}
@@ -102,10 +97,6 @@ export function LoginForm({
                   className="w-full" 
                   disabled={isLoading}>
                   {isLoading ? "Carregando..." : "Login"}
-=======
-                <Button type="submit" className="w-full">
-                  Login
->>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
                 </Button>
               </div>
             </div>
@@ -117,9 +108,5 @@ export function LoginForm({
         and <a href="#">Privacy Policy</a>.
       </div>
     </div>
-  )
-<<<<<<< HEAD
+  );
 }
-=======
-}
->>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a

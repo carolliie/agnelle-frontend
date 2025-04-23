@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import "./../../app/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -20,12 +20,22 @@ export default function RootLayout({
 
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
     }
   }, [user, loading, router]);
+
+  const getPathName = () => {
+    const pathSegments = pathname.split("/");
+    const lastSegment = pathSegments[pathSegments.length - 1];
+    
+    const formatted = lastSegment.replace(/-/g, " ").replace(/\b\w/g, char => char.toUpperCase());
+
+    return formatted;
+  }
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
@@ -55,7 +65,7 @@ export default function RootLayout({
                         </BreadcrumbItem>
                         <BreadcrumbSeparator className="hidden md:block" />
                         <BreadcrumbItem>
-                          <BreadcrumbPage>Seção</BreadcrumbPage>
+                          <BreadcrumbPage>{getPathName()}</BreadcrumbPage>
                         </BreadcrumbItem>
                       </BreadcrumbList>
                     </Breadcrumb>
