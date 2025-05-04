@@ -49,6 +49,110 @@ export type Category = {
   image: string
 }
 
+function ActionsCategoryCell({ category }: { category: Category }) {
+  const router = useRouter()
+
+  const handleDeleteCategory = async () => {
+    const token = localStorage.getItem("authToken")
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/categories/delete/${category.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      toast({
+        title: "✅ Categoria excluída com sucesso!",
+        description: `A categoria "${category.name}" foi removida.`,
+      })
+      router.push("/dashboard/categorias")
+    } catch {
+      toast({
+        title: "❌ Erro ao deletar categoria.",
+        description:
+          "Esta categoria está associada a um produto. Tente novamente mais tarde.",
+      })
+      router.push("/dashboard/categorias")
+    }
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Abrir menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Ações</DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={() => navigator.clipboard.writeText(category.categorySlug)}
+        >
+          Copiar Slug
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Link href={`/dashboard/categorias/editar-categoria/${category.categorySlug}`}>
+            Editar Categoria
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            toast({
+              title: "❌ Você deseja excluir esta categoria?",
+              description: (
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-4 p-3 bg-gray-900 rounded-lg">
+                    {category.image ? (
+                      <Image
+                        src={category.image}
+                        alt="Preview da categoria"
+                        width={80}
+                        height={80}
+                        className="rounded-lg object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-16 h-16 bg-gray-300 rounded-lg flex items-center justify-center">
+                        <span className="text-white">Sem imagem</span>
+                      </div>
+                    )}
+                    <div className="w-[300px]">
+                      <h3 className="text-lg font-semibold text-white">
+                        {category.name}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="flex justify-between py-4">
+                    <Button
+                      className="bg-red-600 text-white hover:text-black"
+                      onClick={handleDeleteCategory}
+                    >
+                      Sim, desejo excluir
+                    </Button>
+                    <Button
+                      className="bg-blue-900 text-white hover:text-black"
+                      onClick={() => toast({ title: "Cancelado." })}
+                    >
+                      Não, prefiro cancelar
+                    </Button>
+                  </div>
+                </div>
+              ),
+              duration: Infinity,
+            })
+          }}
+        >
+          Excluir categoria <TrashIcon color="red" />
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 export const columns: ColumnDef<Category>[] = [
   {
     accessorKey: "name",
@@ -93,115 +197,8 @@ export const columns: ColumnDef<Category>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const category = row.original
-      const router = useRouter()
-
-      const handleDeleteCategory = async () => {
-        const token = localStorage.getItem("authToken")
-        try {
-          await axios.delete(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/categories/delete/${category.id}`,
-            {
-              headers: {
-                "Authorization": `Bearer ${token}`
-              }
-            }
-          )
-          toast({
-            title: "✅ Categoria excluída com sucesso!",
-            description: `A categoria "${category.name}" foi removida.`,
-          })
-          router.refresh()
-        } catch {
-          toast({
-            title: "❌ Erro ao deletar categoria.",
-            description: "Esta categoria está associada a um produto. Tente novamente mais tarde.",
-          })
-        }
-      }
-
-      function dismiss(): void {
-        throw new Error("Function not implemented.")
-      }
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(category.categorySlug)}
-            >
-              Copiar Slug
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/dashboard/categorias/editar-categoria/${category.categorySlug}`}>
-                Editar Categoria
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-                          onClick={() => {
-                            toast({
-                              title: "❌ Você deseja excluir este Produto?",
-                              description: (
-                                <div className="flex flex-col">
-                                  <div className="flex items-center gap-4 p-3 bg-gray-900 rounded-lg">
-                                    {category.image ? (
-                                      <Image
-                                        src={category.image}
-                                        alt="Preview do produto"
-                                        width={80}
-                                        height={80}
-                                        className="rounded-lg object-cover"
-                                        unoptimized={true}
-                                      />
-                                    ) : (
-                                      <div className="w-16 h-16 bg-gray-300 rounded-lg flex items-center justify-center">
-                                        <span className="text-white">Sem imagem</span>
-                                      </div>
-                                    )}
-                                    <div className="w-[300px]">
-                                      <h3 className="text-lg font-semibold text-white">
-                                        {category.name}
-                                      </h3>
-                                    </div>
-                                  </div>
-                                  <div className="flex justify-between py-4">
-                                    <Button
-                                      className="bg-red-600 text-white hover:text-black"
-                                      onClick={() => {
-                                        handleDeleteCategory();
-                                      }}
-                                    >
-                                      Sim, desejo excluir
-                                    </Button>
-                                    <Button
-                                      className="bg-blue-900 text-white hover:text-black"
-                                      onClick={() => dismiss()}
-                                    >
-                                      Não, prefiro cancelar
-                                    </Button>
-                                  </div>
-                                </div>
-                              ),
-                              duration: Infinity,
-                            });
-                          }}
-                        >
-                          Excluir produto <TrashIcon color="red" />
-                        </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
+    cell: ({ row }) => <ActionsCategoryCell category={row.original} />,
+  }
 ]
 
 export function CategoriesTable() {

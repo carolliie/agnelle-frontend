@@ -15,8 +15,9 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form"
-import { useParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Skeleton } from "@/components/ui/skeleton"
+import Image from "next/image"
 
 interface CategoryData {
   id: string
@@ -102,7 +103,7 @@ export default function EditCategoryForm({ categorySlug }: { categorySlug: strin
           title: "✅ Sucesso",
           description: "Categoria atualizada com sucesso!",
         })
-        router.push("/dashboard/categories")
+        router.push("/dashboard/categorias")
       }
     } catch (err) {
       console.error("Erro ao atualizar categoria:", err)
@@ -162,9 +163,11 @@ export default function EditCategoryForm({ categorySlug }: { categorySlug: strin
             {selectedImage && (
               <div className="mt-2">
                 <p className="text-sm text-muted-foreground">Imagem atual:</p>
-                <img 
+                <Image 
                   src={selectedImage} 
                   alt="Preview da categoria" 
+                  width={200}
+                  height={200}
                   className="mt-1 h-20 w-20 object-cover rounded-md"
                 />
               </div>
@@ -178,7 +181,7 @@ export default function EditCategoryForm({ categorySlug }: { categorySlug: strin
             <Button 
               variant="outline" 
               type="button"
-              onClick={() => router.push("/dashboard/categories")}
+              onClick={() => router.push("/dashboard/categorias")}
             >
               Cancelar
             </Button>

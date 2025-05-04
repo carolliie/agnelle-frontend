@@ -13,9 +13,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <head>
-        <link href="https://api.fontshare.com/v2/css?f[]=pencerio@50&display=swap" rel="stylesheet" />
+        <link href="https://api.fontshare.com/v2/css?f[]=general-sans@200,201,300,301,400,401,500,501,600,601,700,701,1,2&display=swap" rel="stylesheet"/>
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }

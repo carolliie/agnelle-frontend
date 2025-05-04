@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import axios from "axios";
 
 export function LoginForm({
   className,
@@ -32,11 +33,9 @@ export function LoginForm({
     try {
       setIsLoading(true); 
       await login(email, password);
-    } catch (error: any) {
-      if (error.response) {
-        setError(error.response.data.message || "Email ou senha incorretos");
-      } else if (error.request) {
-        setError("Não foi possível conectar ao servidor.");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError("Email ou senha incorretos");
       } else {
         setError("Ocorreu um erro durante o login.");
       }

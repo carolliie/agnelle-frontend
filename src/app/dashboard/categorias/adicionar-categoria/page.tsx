@@ -15,6 +15,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form"
+import Image from "next/image"
 
 export default function AdicionarCategoria() {
   const [selectedImage, setSelectedImage] = useState<string>("")
@@ -111,9 +112,11 @@ export default function AdicionarCategoria() {
             {selectedImage && (
               <div className="mt-2">
                 <p className="text-sm text-muted-foreground">Imagem selecionada:</p>
-                <img 
+                <Image 
                   src={selectedImage} 
-                  alt="Preview da categoria" 
+                  alt="Preview da categoria"
+                  width={200}
+                  height={200}
                   className="mt-1 h-20 w-20 object-cover rounded-md"
                 />
               </div>

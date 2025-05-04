@@ -36,7 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from "@/hooks/use-toast"
-import router from "next/router"
+import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import Image from "next/image"
@@ -52,6 +52,122 @@ export type Products = {
   date: Date
 }
 
+const formatPrice = (price: string | number) => {
+  const priceNumber = typeof price === "string" ? parseFloat(price.replace(",", ".")) : price;
+
+  return priceNumber.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+};
+
+function ActionsCell({ product }: { product: Products }) {
+  const router = useRouter()
+
+  const handleDeleteProduct = async () => {
+    const token = localStorage.getItem("authToken")
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/delete/${product.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      toast({
+        title: "✅ Produto excluído com sucesso!",
+        description: `O produto "${product.name}" foi removido.`,
+      })
+      router.push("/dashboard/produtos")
+    } catch {
+      toast({
+        title: "❌ Erro ao deletar produto.",
+        description: "Tente novamente mais tarde.",
+      })
+      router.push("/dashboard/produtos")
+    }
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-full p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Ações</DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={() =>
+            navigator.clipboard.writeText(`/produtos/${product.slug}`)
+          }
+        >
+          Copiar URL do Produto
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Link href={`/produtos/${product.slug}`}>Ver detalhes</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/dashboard/produtos/editar-produto/${product.slug}`}>
+            Editar Produto
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            toast({
+              title: "❌ Você deseja excluir este Produto?",
+              description: (
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-4 p-3 bg-gray-900 rounded-lg">
+                    {product.images?.length > 0 ? (
+                      <Image
+                        src={product.images[0]}
+                        alt="Preview do produto"
+                        width={80}
+                        height={80}
+                        className="rounded-lg object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-16 h-16 bg-gray-300 rounded-lg flex items-center justify-center">
+                        <span className="text-white">Sem imagem</span>
+                      </div>
+                    )}
+                    <div className="w-[300px]">
+                      <h3 className="text-lg font-semibold text-white">
+                        {product.name}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="flex justify-between py-4">
+                    <Button
+                      className="bg-red-600 text-white hover:text-black"
+                      onClick={handleDeleteProduct}
+                    >
+                      Sim, desejo excluir
+                    </Button>
+                    <Button
+                      className="bg-blue-900 text-white hover:text-black"
+                      onClick={() => toast({ title: "Cancelado." })}
+                    >
+                      Não, prefiro cancelar
+                    </Button>
+                  </div>
+                </div>
+              ),
+              duration: Infinity,
+            })
+          }}
+        >
+          Excluir produto <TrashIcon color="red" />
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 export const columns: ColumnDef<Products>[] = [
   {
@@ -62,7 +178,7 @@ export const columns: ColumnDef<Products>[] = [
   {
     accessorKey: "price",
     header: "Preço",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("price")}</div>,
+    cell: ({ row }) => <div className="capitalize">{formatPrice(row.getValue("price"))}</div>,
   },
   {
     accessorKey: "categories",
@@ -89,7 +205,6 @@ export const columns: ColumnDef<Products>[] = [
     cell: ({ row }) => {
       const images = row.getValue("images") as string[];
       if (images && images.length > 0) {
-        // Verifica se a URL já inclui o domínio base
         const imageUrl = images[0].startsWith('http') 
           ? images[0] 
           : `${process.env.NEXT_PUBLIC_API_BASE_URL}${images[0]}`;
@@ -110,116 +225,11 @@ export const columns: ColumnDef<Products>[] = [
         return <div>No Image</div>;
       }
     },
-  },
-  {
+  },{
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const product = row.original;
-
-      const handleDeleteProduct = async () => {
-        const token = localStorage.getItem("authToken");
-        try {
-          await axios.delete(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/delete/${product.id}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-              }
-            }
-          );
-          toast({
-            title: "✅ Produto excluído com sucesso!",
-            description: `O Produto "${product.name}" foi removido.`,
-          });
-          router.push("/dashboard/produtos")
-        } catch {
-          toast({
-            title: "❌ Erro ao deletar Produto.",
-            description: "Tente novamente mais tarde.",
-          });
-        }
-      }
-
-      function dismiss(): void {
-        throw new Error("Function not implemented.")
-      }
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-full p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(`/produtos/${product?.slug}`)}
-            >
-              Copiar URL do Produto
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem><Link href={`/produtos/${product?.slug}`}>Ver detalhes</Link></DropdownMenuItem>
-            <DropdownMenuItem><Link href={`/dashboard/produtos/editar-produto/${product?.slug}`}>Editar Produto</Link></DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                toast({
-                  title: "❌ Você deseja excluir este Produto?",
-                  description: (
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-4 p-3 bg-gray-900 rounded-lg">
-                        {product.images && product.images.length > 0 ? (
-                          <Image
-                            src={product.images[0]}
-                            alt="Preview do produto"
-                            width={80}
-                            height={80}
-                            className="rounded-lg object-cover"
-                            unoptimized={true}
-                          />
-                        ) : (
-                          <div className="w-16 h-16 bg-gray-300 rounded-lg flex items-center justify-center">
-                            <span className="text-white">Sem imagem</span>
-                          </div>
-                        )}
-                        <div className="w-[300px]">
-                          <h3 className="text-lg font-semibold text-white">
-                            {product.name}
-                          </h3>
-                        </div>
-                      </div>
-                      <div className="flex justify-between py-4">
-                        <Button
-                          className="bg-red-600 text-white hover:text-black"
-                          onClick={() => {
-                            handleDeleteProduct();
-                          }}
-                        >
-                          Sim, desejo excluir
-                        </Button>
-                        <Button
-                          className="bg-blue-900 text-white hover:text-black"
-                          onClick={() => dismiss()}
-                        >
-                          Não, prefiro cancelar
-                        </Button>
-                      </div>
-                    </div>
-                  ),
-                  duration: Infinity,
-                });
-              }}
-            >
-              Excluir produto <TrashIcon color="red" />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu >
-      )
-    },
-  },
+    cell: ({ row }) => <ActionsCell product={row.original} />,
+  }  
 ]
 
 export function DataTableDemo() {

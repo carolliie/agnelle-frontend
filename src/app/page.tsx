@@ -1,10 +1,25 @@
+import BannerWrapper from "./home/BannerWrapper";
+import Categorias from "./home/Categorias";
+import Encomendar from "./home/Encomendar";
+import FooterWrapper from "./home/FooterWrapper";
+import Hero from "./home/Hero";
+import Navbar from "./home/Navbar";
+import SecaoProdutos from "./home/SecaoProdutos";
+import Sobre from "./home/Sobre";
+
+export const revalidate = 0;
+
 export default function Home() {
   return (
-<<<<<<< HEAD
     <main>
+      <Navbar/>
+      <Hero/>
+      <Categorias/>
+      <Encomendar/>
+      <SecaoProdutos/>
+      <Sobre/>
+      <BannerWrapper/>
+      <FooterWrapper/>
     </main>
-=======
-    <main></main>
->>>>>>> 4056c8e619177271da6b1d305acd53d70cab3f8a
   );
 }

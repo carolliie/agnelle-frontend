@@ -1,14 +1,14 @@
+import AddImageBlock from "@/components/add-image-block";
 import { CarouselBlock } from "@/components/carousel-block";
-import { ChartBarHorizontal } from "@/components/chart-bar";
-import { VisitorsChart } from "@/components/chart-visitors";
 import { PieChartList } from "@/components/pie-chart";
+import { ToDoList } from "@/components/to-do-list";
 
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-        <div className="rounded-xl bg-muted/50">
-          <VisitorsChart />
+        <div className="rounded-xl bg-muted/50 overflow-hidden">
+          <AddImageBlock/>
         </div>
         <div className="rounded-xl bg-muted/50 h-full">
           <PieChartList />
@@ -18,7 +18,7 @@ export default function Home() {
         </div>
       </div>
       <div className="max-h-fit flex-1 rounded-xl bg-muted/50 md:min-h-min">
-        <ChartBarHorizontal />
+        <ToDoList/>
       </div>
     </div>
   );

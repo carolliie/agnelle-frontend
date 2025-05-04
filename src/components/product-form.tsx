@@ -59,6 +59,8 @@ export function ProductForm() {
   }, []);
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    const formattedPrice = data.price.replace(",", ".");
+    
     const formattedCategories = data.categories.map((slug: string) => {
       const categoriaObj = categories.find((cat) => cat.categorySlug === slug || cat.name === slug);
       return categoriaObj ? { id: categoriaObj.id, name: categoriaObj.name, categorySlug: categoriaObj.categorySlug } : null;
@@ -68,7 +70,7 @@ export function ProductForm() {
       const productData = {
         name: data.name,
         size: data.size,
-        price: parseFloat(data.price),
+        price: parseFloat(formattedPrice),
         images: selectedImages.map(img => encodeURI(img)),
         categories: formattedCategories,
       };
@@ -104,10 +106,10 @@ export function ProductForm() {
 
   const handleImageSelect = useCallback((images: string[]) => {
     setSelectedImages(images);
-    console.log(selectedImages);
+    console.log(images);
     form.setValue('images', images as [string, ...string[]]);
   }, [form]);
-
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-fit space-y-8">
@@ -203,7 +205,3 @@ export function ProductForm() {
     </Form>
   );
 }
-function encondeURI(img: string): any {
-  throw new Error("Function not implemented.");
-}
-

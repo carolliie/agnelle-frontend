@@ -125,7 +125,7 @@ export default function EmailInput() {
             <FormField
               control={form.control}
               name="code"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Insira o código enviado por e-mail</FormLabel>
                   <FormControl>

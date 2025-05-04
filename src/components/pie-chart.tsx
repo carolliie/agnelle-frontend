@@ -22,7 +22,7 @@ import axios from "axios"
 
 const chartConfig = {
   visitors: {
-    label: "Visitors",
+    label: "Visitantes",
   },
   desktop: {
     label: "Desktop",
@@ -61,8 +61,8 @@ export function PieChartList() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Label List</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Visitantes</CardTitle>
+        <CardDescription>Total semanal</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

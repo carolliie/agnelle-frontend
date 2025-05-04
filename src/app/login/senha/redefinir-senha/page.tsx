@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,7 +27,7 @@ const FormSchema = z.object({
   }),
 });
 
-export function InputFormNewPassword() {
+export default function InputFormNewPassword() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -62,6 +61,8 @@ export function InputFormNewPassword() {
           title: "✅ Senha alterada com sucesso!",
           description: "Agora você pode fazer login com sua nova senha.",
         });
+        setEmail(email)
+        setCode(code)
         router.push("/login");
       } else {
         toast({

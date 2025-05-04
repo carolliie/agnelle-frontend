@@ -6,9 +6,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 export default function BibliotecaMidias() {
-    const [midias, setMidias] = useState<any[]>([]);
+    const [midias, setMidias] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [imageToDelete, setImageToDelete] = useState<string | null>(null);
@@ -17,7 +18,7 @@ export default function BibliotecaMidias() {
         async function fetchMidias() {
             try {
                 const token = localStorage.getItem("authToken");
-
+    
                 const response = await axios.get(
                     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/images`,
                     {
@@ -26,7 +27,7 @@ export default function BibliotecaMidias() {
                         },
                     }
                 );
-
+    
                 setMidias(response.data);
             } catch (err) {
                 console.error("Erro ao carregar imagens:", err);
@@ -35,9 +36,11 @@ export default function BibliotecaMidias() {
                 setLoading(false);
             }
         }
-
+    
         fetchMidias();
     }, []);
+    
+    console.log(imageToDelete);
 
     const handleDelete = async (mediaUrl: string) => {
         try {
@@ -113,7 +116,7 @@ export default function BibliotecaMidias() {
                             key={index}
                             className="relative w-full h-48 bg-gray-200 rounded-lg shadow-md overflow-hidden"
                         >
-                            <img
+                            <Image
                                 src={media}
                                 alt={`Imagem ${index}`}
                                 width={400}
@@ -129,7 +132,7 @@ export default function BibliotecaMidias() {
                                             <div className="flex flex-col">
                                                 <div className="flex items-center gap-4 p-3 bg-gray-900 rounded-lg">
                                                     {media ? (
-                                                        <img
+                                                        <Image
                                                             src={media}
                                                             alt="Preview do produto"
                                                             width={80}
@@ -172,7 +175,7 @@ export default function BibliotecaMidias() {
                                         duration: Infinity,
                                     });
                                 }}
-                                className="absolute top-2 right-2 bg-red-600 text-white"
+                                className="absolute top-2 right-2"
                             >
                                 Excluir
                             </Button>

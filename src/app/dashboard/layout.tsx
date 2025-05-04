@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <title>Agnelle - Dashboard</title>
-      <body>
+      <body className="dashboard">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

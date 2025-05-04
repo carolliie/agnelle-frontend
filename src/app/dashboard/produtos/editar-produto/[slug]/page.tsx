@@ -23,7 +23,6 @@ export default function EditarProduct() {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-
         async function fetchProduct() {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products/${slug}`);
@@ -37,6 +36,8 @@ export default function EditarProduct() {
         }
         fetchProduct();
     }, [slug]);
+    
+    console.log(product);
 
     if (loading) return <Skeleton className="w-[100px] h-[20px] rounded-full" />;
     if (error) return <p>Erro ao carregar a publicação.</p>

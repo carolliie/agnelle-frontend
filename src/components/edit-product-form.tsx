@@ -12,6 +12,13 @@ import axios from "axios";
 import { Checkbox } from "./ui/checkbox";
 import BibliotecaMidias from "./midia-library";
 
+// Define a type for the category object
+interface Category {
+    id: string;
+    name: string;
+    categorySlug: string;
+}
+
 const FormSchema = z.object({
     name: z.string().min(2, {
         message: "Título deve possuir pelo menos 2 caracteres.",
@@ -28,8 +35,8 @@ const FormSchema = z.object({
     categories: z.array(z.string())
 });
 
-export function EditProductForm({ productSlug }: { productSlug: any }) {
-    const [categories, setCategories] = useState<{ id: string; name: string; categorySlug: string }[]>([]);
+export function EditProductForm({ productSlug }: { productSlug: string | string[]}) { // Fix type here
+    const [categories, setCategories] = useState<Category[]>([]); // Use the Category type here
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -68,7 +75,7 @@ export function EditProductForm({ productSlug }: { productSlug: any }) {
                 form.setValue("size", product.size);
                 form.setValue("price", product.price);
                 form.setValue("images", product.images);
-                form.setValue("categories", product.categories.map((category: any) => category.categorySlug));
+                form.setValue("categories", product.categories.map((category: Category) => category.categorySlug)); // Fix type here
 
                 setSelectedImages(product.images);
             } catch (error) {
@@ -83,16 +90,17 @@ export function EditProductForm({ productSlug }: { productSlug: any }) {
     }, [productSlug, form]);
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+        const formattedPrice = data.price.replace(",", ".");
+
         const formattedCategories = data.categories.map((slug: string) => {
             return slug;
-          });
-          
+        });
 
         try {
             const productData = {
                 name: data.name,
                 size: data.size,
-                price: parseFloat(data.price),
+                price: parseFloat(formattedPrice),
                 images: selectedImages.map(img => encodeURI(img)),
                 categories: formattedCategories,
             };
@@ -176,7 +184,7 @@ export function EditProductForm({ productSlug }: { productSlug: any }) {
                 <FormField
                     control={form.control}
                     name="images"
-                    render={({ field }) => (
+                    render={() => (
                         <FormItem>
                             <FormLabel>Imagens do Produto</FormLabel>
                             <FormControl>

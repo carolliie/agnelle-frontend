@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 interface BibliotecaMidiasProps {
     onImageSelect: (imageUrls: string[]) => void;
@@ -85,9 +86,11 @@ export default function BibliotecaMidias({ onImageSelect }: BibliotecaMidiasProp
                                 }`}
                             onClick={() => handleToggle(media)}
                         >
-                            <img
+                            <Image
                                 src={media}
                                 alt={`Imagem ${index}`}
+                                width={200}
+                                height={200}
                                 className="object-cover w-full h-full"
                             />
                             <div

@@ -26,7 +26,7 @@ export default function EditarCategoriaPagina() {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/categories/${slug}`);
                 setCategory(response.data);
             } catch (err) {
-                console.error(err);
+                console.error("Erro ao buscar categoria:", err);
                 setError(true);
             } finally {
                 setLoading(false);
@@ -35,8 +35,10 @@ export default function EditarCategoriaPagina() {
         fetchCategory();
     }, [slug]);
 
+    console.log(category);
+
     if (loading) return <Skeleton className="w-[100px] h-[20px] rounded-full" />;
-    if (error) return <p>Erro ao carregar a publicação.</p>
+    if (error) return <p>Erro ao carregar a publicação.</p>;
 
     return (
         <div>

@@ -7,6 +7,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { Products } from "./data-table";
 import axios from "axios";
 import { BookHeart, TimerIcon } from "lucide-react";
+import Link from "next/link";
 
 export function CarouselBlock() {
   const plugin = React.useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
@@ -34,8 +35,8 @@ export function CarouselBlock() {
     >
       <CarouselContent>
         {products.length > 0 ? (
-          products.map((product) => (
-            <CarouselItem key={product.id}>
+          products.map((product, index) => (
+            <CarouselItem key={index}>
               <div className="p-1">
                 <Card>
                   <CardContent
@@ -55,7 +56,7 @@ export function CarouselBlock() {
                       {new Date(product.date).toLocaleDateString("pt-BR")}
                     </p>
                     <div className="flex justify-end z-10 w-full items-center">
-                      <a href={`/blog/${product.slug}`} className="py-1 px-2 text-sm text-white hover:bg-white hover:bg-opacity-5 transition duration-300 ease-in-out flex justify-between items-center border border-white border-opacity-50 rounded-lg">Ver publicação <BookHeart width={14} className="ml-1"/></a>
+                      <Link href={`/catalogo/#${product.slug}`} className="py-1 px-2 text-sm text-white hover:bg-white hover:bg-opacity-5 transition duration-300 ease-in-out flex justify-between items-center border border-white border-opacity-50 rounded-lg">Ver publicação <BookHeart width={14} className="ml-1"/></Link>
                     </div>
                   </CardContent>
                 </Card>
@@ -67,7 +68,7 @@ export function CarouselBlock() {
             <div className="p-1">
               <Card>
                 <CardContent className="flex items-center justify-center p-6 h-[370px]">
-                  <span className="text-lg font-semibold">Nenhum product disponível</span>
+                  <span className="text-lg font-semibold">Nenhum produto disponível</span>
                 </CardContent>
               </Card>
             </div>
