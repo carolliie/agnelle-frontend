@@ -122,6 +122,7 @@ export default function BibliotecaMidias() {
                                 width={400}
                                 height={400}
                                 className="object-cover w-full h-full"
+                                unoptimized={true}
                             />
                             <Button
                                 onClick={() => {
@@ -138,6 +139,7 @@ export default function BibliotecaMidias() {
                                                             width={80}
                                                             height={80}
                                                             className="rounded-lg object-cover"
+                                                            unoptimized={true}
                                                         />
                                                     ) : (
                                                         <div className="w-16 h-16 bg-gray-300 rounded-lg flex items-center justify-center">

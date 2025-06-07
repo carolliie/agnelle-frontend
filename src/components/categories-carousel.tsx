@@ -88,6 +88,7 @@ export function CategoriesCarousel() {
                                 maskRepeat: 'no-repeat',
                                 maskSize: '180px',
                               }}
+                              unoptimized={true}
                             />
                         )}
 

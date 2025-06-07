@@ -56,7 +56,7 @@ export default function Footer() {
                     alt="nuvem rosa" 
                     width={1920}
                     height={100}
-                    className="w-fit"
+                    className="w-full"
                 />
             </motion.div>
 

@@ -263,6 +263,7 @@ export default function CatalogoComponents() {
                                 className="object-cover h-52 w-52 lg:h-80 lg:w-80 transition-all duration-300 ease-in-out hover:scale-105 p-2 lg:p-4 rounded-[25px]"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                                 priority={index === 0}
+                                unoptimized={true}
                               />
                             </CarouselItem>
                           ))}

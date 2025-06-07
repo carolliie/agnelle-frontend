@@ -141,6 +141,7 @@ export function ProductsCarousel() {
                                 className="object-cover h-80 w-80 transition-all duration-300 ease-in-out hover:scale-105 p-4 rounded-[25px]"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                                 priority={index === 0}
+                                unoptimized={true}
                               />
                             </CarouselItem>
                           ))}
@@ -205,8 +206,8 @@ export function ProductsCarousel() {
         </CarouselContent>
         {products.length > 1 && (
           <>
-            <CarouselPrevious className="prev-button left-[14vh] lg:left-[79vh] translate-y-[30vh] lg:translate-y-[44vh] md:flex bg-[#AAD0F4] transition-all duration-300 hover:bg-[#6396c5] border-none" />
-            <CarouselNext className="next-button right-[14vh] lg:right-[79vh] translate-y-[30vh]  lg:translate-y-[44vh] md:flex bg-[#AAD0F4] transition-all duration-300 hover:bg-[#6396c5] border-none" />
+            <CarouselPrevious className="prev-button left-[14vh] lg:left-[79vh] translate-y-[30vh] lg:translate-y-[34vh] md:flex bg-[#AAD0F4] transition-all duration-300 hover:bg-[#6396c5] border-none" />
+            <CarouselNext className="next-button right-[14vh] lg:right-[79vh] translate-y-[30vh]  lg:translate-y-[34vh] md:flex bg-[#AAD0F4] transition-all duration-300 hover:bg-[#6396c5] border-none" />
           </>
         )}
       </Carousel>

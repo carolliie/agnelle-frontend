@@ -118,6 +118,7 @@ export default function AdicionarCategoria() {
                   width={200}
                   height={200}
                   className="mt-1 h-20 w-20 object-cover rounded-md"
+                  unoptimized={true}
                 />
               </div>
             )}
