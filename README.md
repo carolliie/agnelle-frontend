@@ -1,124 +1,241 @@
 # Agnelle Frontend
 
-Frontend do painel administrativo da aplicação **Agnelle**, construído com Next.js + React + Tailwind CSS, para consumo da API com autenticação via Bearer token.
+Catálogo de Produtos — Frontend da aplicação web desenvolvido com **React + Next.js + TypeScript**, responsável pela **interface pública** (catálogo de produtos) e pelo **painel administrativo** (gestão via autenticação JWT).
+Este projeto consome a API REST do [Agnelle Backend](https://github.com/carolliie/agnelle-backend) e segue os artefatos definidos no documento de visão do sistema.
 
-## 🧭 Visão geral
+---
 
-Este projeto tem como objetivo oferecer uma interface administrativa responsiva, estruturada e escalável, que permita:
+## Sumário
 
-- Autenticação e autorização de usuários logados (nome, e-mail, cargo, unidade acadêmica, empresa terceirizada)  
-- Exibição de dados dinâmicos do usuário (via cartão de perfil, dropdowns, menus, etc)  
-- Funcionalidades de CRUD (criação, leitura, edição, exclusão) para entidades como unidades acadêmicas  
-- Tabelas com botões de ação por linha (ícone de três pontos → modal de edição/exclusão)  
-- Layout moderno com animação lateral, centralização de elementos ao lado de imagem, conforme necessidade de UX  
+* [Visão geral](#visão-geral)
+* [Funcionalidades (MVP)](#funcionalidades-mvp)
+* [Tecnologias](#tecnologias)
+* [Arquitetura e componentes principais](#arquitetura-e-componentes-principais)
+* [Pré-requisitos](#pré-requisitos)
+* [Instalação e execução local](#instalação-e-execução-local)
+* [Variáveis de ambiente](#variáveis-de-ambiente)
+* [Estrutura de pastas (sugerida)](#estrutura-de-pastas-sugerida)
+* [Rotas principais](#rotas-principais)
+* [Protótipo de telas](#protótipo-de-telas)
+* [Integração com o backend](#integração-com-o-backend)
+* [Roadmap e entregas iniciais](#roadmap-e-entregas-iniciais)
+* [Boas práticas e checklist técnico](#boas-práticas-e-checklist-técnico)
+* [Riscos e mitigações](#riscos-e-mitigações)
+* [Licença](#licença)
 
-## 📦 Tecnologias principais
+---
 
-- Next.js (TypeScript)  
-- React  
-- Tailwind CSS  
-- Axios (para chamadas à API com token Bearer)  
-- ESLint / Prettier (para padronização de código)  
-- Outras dependências comuns (ver `package.json`)  
+## Visão geral
 
-## 🚀 Como executar
+Aplicação web voltada para **divulgação e gestão de produtos**, permitindo:
 
-### Pré-requisitos  
-- Node.js (recomendado v16+ ou compatível com Next.js)  
-- Yarn, npm ou pnpm (segundo sua preferência)  
+* Exposição pública de produtos e categorias com busca e filtros;
+* Página de detalhes com redirecionamento dinâmico (ex.: WhatsApp);
+* Painel administrativo protegido (login, CRUD de produtos e categorias);
+* Upload de imagens e gerenciamento de status (ativo/inativo).
 
-### Passos  
+---
+
+## Funcionalidades (MVP)
+
+* **Frontend público:**
+
+  * Home / Listagem de produtos com filtros (categoria, preço, tags)
+  * Página de produto com galeria e botão de contato (WhatsApp ou link externo)
+* **Painel Administrativo:**
+
+  * Login via JWT
+  * Listagem e edição de produtos (Admin/Editor)
+  * Upload assíncrono de imagens
+  * Gerenciamento de categorias e tags
+* **Autenticação e roles:**
+
+  * Admin (gerencia tudo)
+  * Editor (CRUD de produtos e categorias)
+
+---
+
+## Tecnologias
+
+* **Next.js 14+** (React Framework)
+* **TypeScript**
+* **Axios** (integração com API backend)
+* **TailwindCSS** (estilização)
+* **NextAuth / JWT Context** (autenticação)
+* **Framer Motion** (animações)
+* **ShadCN UI / Radix UI** (componentes reutilizáveis)
+* **Vercel** (deploy sugerido)
+
+---
+
+## Arquitetura e componentes principais
+
+```
+Frontend (Next.js)
+├── Public Catalog Pages
+│   ├── Home (Listagem com filtros e busca)
+│   ├── Produto ([slug]) → Página de detalhes
+│
+├── Admin Panel
+│   ├── Login
+│   ├── Dashboard
+│   ├── Produtos (lista, edição, novo)
+│   ├── Categorias (CRUD)
+│
+└── Shared Components
+    ├── Header / Footer
+    ├── ProductCard / ProductGrid
+    ├── Modal / Toast / Loading
+    ├── AuthProvider / ProtectedRoute
+```
+
+---
+
+## Pré-requisitos
+
+* Node.js 18+
+* npm ou yarn
+* Backend configurado e rodando ([Agnelle Backend](https://github.com/carolliie/agnelle-backend))
+
+---
+
+## Instalação e execução local
+
+1. Clone o repositório:
+
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/carolliie/agnelle-frontend.git
 cd agnelle-frontend
+```
 
-# 2. Instale as dependências
-npm install
-# ou
-yarn
-# ou
-pnpm install
-
-# 3. Configure variáveis de ambiente
-# Crie um arquivo `.env.local` (ou conforme convém) com:
-# NEXT_PUBLIC_API_BASE_URL=<URL da API>
-# NEXT_PUBLIC_AUTH_TOKEN=<token de autenticação inicial (se aplicável)>
-
-# 4. Execute em modo de desenvolvimento
-npm run dev
-# ou
-yarn dev
-# ou
-pnpm dev
-
-# 5. Abra o navegador em http://localhost:3000 para ver o app
-````
-
-### Build para produção
+2. Instale as dependências:
 
 ```bash
-npm run build
-npm start
-# ou o equivalente com yarn/pnpm
+npm install
+# ou
+yarn install
 ```
 
-## 🗂 Estrutura do projeto
+3. Configure o arquivo `.env.local` conforme abaixo.
 
-```
-/agnelle-frontend
-│
-├─ public/               # arquivos públicos estáticos
-├─ src/
-│   ├─ components/        # componentes React reutilizáveis (UserMetaCard, Dropdowns, etc)
-│   ├─ features/          # módulos de domínio (autenticação, unidades acadêmicas, etc)
-│   ├─ pages/             # páginas do Next.js (login, dashboard, etc)
-│   ├─ styles/            # arquivos de estilo Tailwind ou CSS extra
-│   ├─ services/          # chamada à API via Axios, configuração de token, interceptors
-│   └─ utils/             # utilitários comuns
-├─ tailwind.config.ts     # configuração do Tailwind CSS
-├─ next.config.ts         # configuração do Next.js
-├─ tsconfig.json          # TypeScript
-└─ package.json
+4. Execute o projeto:
+
+```bash
+npm run dev
 ```
 
-## 🔐 Autenticação & Sessão
+5. Acesse: [http://localhost:3000](http://localhost:3000)
 
-* Ao logar, o usuário recebe um token Bearer, que deve ser armazenado em um local seguro (contexto, Redux, React Query, ou localStorage conforme arquitetura).
-* As requisições Axios são configuradas com esse token nos cabeçalhos (`Authorization: Bearer <token>`).
-* O painel exibe informações do usuário logado (nome, e-mail, cargo, unidade acadêmica, empresa terceirizada).
-* Componentes específicos, como cartões de perfil ou dropdowns, consomem esses dados para renderização dinâmica.
+---
 
-## 📋 Funcionalidades do painel
+## Variáveis de ambiente
 
-* Visualizar perfil e dados do usuário logado
-* Navegação lateral com animações e centralização de elementos visuais (ex: imagem + seleção de procedimento)
-* Tabela de unidades acadêmicas com colunas relevantes e, por linha, botão de “3 pontos” para ações (editar/excluir)
-* Modais para edição (PUT) e exclusão (DELETE) de entidades
-* Layout responsivo, limpo e acessível com Tailwind
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080/api
+NEXT_PUBLIC_STORAGE_URL=https://agnelle-uploads.s3.amazonaws.com
+NEXT_PUBLIC_APP_NAME=Agnelle
 
-## 📝 Boas práticas e convenções
+# JWT
+NEXT_PUBLIC_JWT_SECRET=chave_super_secreta
+NEXT_PUBLIC_JWT_EXPIRE=3600
+```
 
-* Componentes React funcionais (hooks) em TypeScript
-* Organização modular por “feature” (facilita manutenção e escalabilidade)
-* Uso de Tailwind CSS para estilização — classes utilitárias, estilo consistente
-* Separação entre lógica de dados (services) e apresentação (components)
-* Código lintado e formatado (ESLint/Prettier)
-* Versionamento suave com commits claros e mensagens significativas
+---
 
-## 💭 Possíveis melhorias / próximos passos
+## Estrutura de pastas sugerida
 
-* Adicionar cobertura de testes (unitário/integrado) com Jest + React Testing Library
-* Implementar paginação, filtros avançados e ordenação nas tabelas
-* Gerenciamento de estado global (ex: React Query, Redux Toolkit ou Zustand)
-* Internacionalização (i18n) para suportar múltiplos idiomas
-* Autorização mais refinada (roles/permissions) para diferentes tipos de usuários
-* Pipeline de CI/CD para testes automáticos e deploy contínuo
+```
+src/
+ ├── app/
+ │   ├── page.tsx
+ │   ├── produto/[slug]/page.tsx
+ │   ├── admin/
+ │   │   ├── page.tsx
+ │   │   ├── produtos/
+ │   │   │   ├── page.tsx
+ │   │   │   ├── novo/page.tsx
+ │   │   │   ├── [id]/editar/page.tsx
+ │   │   └── categorias/
+ │   │       ├── page.tsx
+ │   │       ├── novo/page.tsx
+ │   │       ├── [id]/editar/page.tsx
+ │
+ ├── components/
+ │   ├── ProductCard.tsx
+ │   ├── ProductForm.tsx
+ │   ├── CategorySelect.tsx
+ │   ├── Header.tsx
+ │   ├── Footer.tsx
+ │
+ ├── lib/
+ │   ├── api.ts
+ │   ├── auth.ts
+ │   ├── storage.ts
+ │
+ ├── context/
+ │   ├── AuthContext.tsx
+ │
+ └── styles/
+     ├── globals.css
+```
 
-## 👤 Autora
+---
 
-Esse repositório é mantido por **Ana Caroline Monteiro Vieira Pinto**.
+## Rotas principais
 
-## 📄 Licença
+| Rota                          | Descrição                                         |
+| ----------------------------- | ------------------------------------------------- |
+| `/`                           | Página inicial — listagem de produtos com filtros |
+| `/produto/[slug]`             | Página de detalhes do produto                     |
+| `/admin`                      | Dashboard administrativo                          |
+| `/admin/login`                | Tela de login                                     |
+| `/admin/produtos`             | Lista de produtos                                 |
+| `/admin/produtos/novo`        | Criar novo produto                                |
+| `/admin/produtos/[id]/editar` | Editar produto existente                          |
 
-Este projeto está licenciado sob a **MIT License** — consulte o arquivo `LICENSE` para detalhes (caso exista) ou adicione conforme necessidade.
+---
+
+## Protótipo de telas
+
+### Público
+
+* **Home:** Grid de produtos com busca e filtros laterais.
+* **Produto:** Galeria de imagens, nome, descrição curta, preço e botão “Entrar em contato”.
+
+### Painel Administrativo
+
+* **Login:** Autenticação JWT.
+* **Dashboard:** Resumo de métricas.
+* **Editor de Produto:** Formulário dividido em abas (Geral, Imagens, Categorias & Tags, SEO & Redirect).
+* **Upload:** Preview instantâneo de imagens.
+
+---
+
+## Integração com o backend
+
+* API base: `https://api.agnelle.com/api` (ou localhost em dev)
+* Autenticação via **Bearer Token (JWT)**
+* Endpoints principais:
+
+  * `GET /api/products`
+  * `GET /api/products/:slug`
+  * `POST /api/auth/login`
+  * `POST /api/products`
+  * `POST /api/uploads`
+
+---
+
+## Boas práticas e checklist técnico
+
+* Usar **TypeScript** e **componentes acessíveis (a11y)**
+* Reutilização de UI com **ShadCN / Tailwind**
+* Testes unitários em componentes principais
+* Autenticação protegida via **JWT Context / Middleware Next.js**
+* Evitar `any` e manter tipagem completa
+* Não commitar `.env.local`
+* Implementar ESLint e Prettier
+
+---
+
+**Referência:**
+Documento *Catálogo de Produtos — Artefatos Iniciais* elaborado por Ana Caroline Monteiro Vieira Pinto (UFOPA, 2025).
